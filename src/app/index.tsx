@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import NewTaskInput from '../components/NewTaskInput'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import TaskListItem from '../components/TaskListItem'
 
 
 export type Task = {
@@ -53,21 +54,8 @@ const TodoScreen = () => {
             <SafeAreaView style={{ flex: 1 }}>
             <FlatList data={tasks}
             contentContainerStyle={{ gap: 5, padding: 10 }}
-                renderItem={({ item, index }) => (
-                    <Pressable onPress={() => onItemPressed(index)} style={styles.taskContainer}>
-                        <MaterialCommunityIcons
-                        name={item.isFinished 
-                            ? "checkbox-marked-circle-outline" 
-                            : "checkbox-blank-circle-outline"
-                        }
-                        size={24}
-                        color="dimgray"
-                        />
-                        <Text style={[styles.taskTitle, {textDecorationLine: item.isFinished ? 'line-through' : 'none',}]}>
-                            {item.title}
-                            </Text>
-                    </Pressable>
-                )}
+                renderItem={({ item, index }) => 
+                <TaskListItem task={item} onItemPressed={() => onItemPressed(index)} />}
                 ListFooterComponent={() => <NewTaskInput 
                     onAdd={(newTodo: Task) => 
                         setTasks(currentTasks => [...currentTasks, newTodo]
@@ -83,20 +71,6 @@ const TodoScreen = () => {
 const styles = StyleSheet.create({
     page: {
         backgroundColor: 'white',
-        flex: 1,
-    },
-    taskContainer: {
-        padding: 5,
-        flexDirection: 'row',
-        gap: 10,
-        alignItems: 'center',
-        // borderWidth: 1,
-        // borderColor: 'gray',
-    },
-    taskTitle: {
-        fontFamily: 'InterSemi',
-        fontSize: 15,
-        color: 'dimgray',
         flex: 1,
     },
 })
