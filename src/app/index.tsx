@@ -1,9 +1,16 @@
-import { View, Text, StyleSheet, FlatList, Pressable } from 'react-native'
+import { View, Text, StyleSheet, FlatList, Pressable, TextInput } from 'react-native'
 import React, { useState } from 'react'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import NewTaskInput from '../components/NewTaskInput'
 
 
-const dummyTasks = [{
+export type Task = {
+    title: string;
+    isFinished: boolean;
+}
+
+
+const dummyTasks: Task[] = [{
     title: 'Setup structure',
     isFinished: true,
 },
@@ -26,7 +33,8 @@ const dummyTasks = [{
 ]
 
 const TodoScreen = () => {
-    const [tasks, setTasks] = useState(dummyTasks);
+    const [tasks, setTasks] = useState<Task[]>(dummyTasks);
+
 
     const onItemPressed = (index: number) => {
         setTasks((currentTasks) => {
@@ -56,8 +64,13 @@ const TodoScreen = () => {
                             </Text>
                     </Pressable>
                 )}
+                ListFooterComponent={() => <NewTaskInput 
+                    onAdd={(newTodo: Task) => 
+                        setTasks(currentTasks => [...currentTasks, newTodo]
+                        )} 
+                        />
+                    }
             />
-
         </View>
     )
 }
@@ -80,6 +93,7 @@ const styles = StyleSheet.create({
         fontFamily: 'InterSemi',
         fontSize: 15,
         color: 'dimgray',
+        flex: 1,
     },
 })
 
