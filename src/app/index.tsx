@@ -1,7 +1,8 @@
-import { View, Text, StyleSheet, FlatList, Pressable, TextInput } from 'react-native'
+import { View, Text, StyleSheet, FlatList, Pressable, TextInput, KeyboardAvoidingView, Platform, } from 'react-native'
 import React, { useState } from 'react'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import NewTaskInput from '../components/NewTaskInput'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 
 export type Task = {
@@ -45,10 +46,13 @@ const TodoScreen = () => {
     }
 
     return (
-        <View style={styles.page}>
-
+        <KeyboardAvoidingView 
+        behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+        style={styles.page}
+        >
+            <SafeAreaView style={{ flex: 1 }}>
             <FlatList data={tasks}
-            contentContainerStyle={{ gap: 5 }}
+            contentContainerStyle={{ gap: 5, padding: 10 }}
                 renderItem={({ item, index }) => (
                     <Pressable onPress={() => onItemPressed(index)} style={styles.taskContainer}>
                         <MaterialCommunityIcons
@@ -71,13 +75,13 @@ const TodoScreen = () => {
                         />
                     }
             />
-        </View>
+            </SafeAreaView>
+        </KeyboardAvoidingView>
     )
 }
 
 const styles = StyleSheet.create({
     page: {
-        padding: 15,
         backgroundColor: 'white',
         flex: 1,
     },

@@ -20,6 +20,9 @@ const NewTaskInput = ({ onAdd }: NewTaskInput) => {
             />
             <TextInput
                 onEndEditing={() => {
+                    if (!newTask) {
+                        return;
+                    }
                     onAdd({ title: newTask, isFinished: false })
                     setNewTask('');
                 }}
